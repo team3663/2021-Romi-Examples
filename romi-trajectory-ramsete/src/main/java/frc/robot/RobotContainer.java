@@ -145,8 +145,9 @@ public class RobotContainer {
     // is scheduled over it.
     m_drivetrain.setDefaultCommand(getArcadeDriveCommand());
 
-    // Example of using XboxController buttons
-    // 
+    // XboxController buttons
+    // Back_Button
+    new Button(m_controller::getBackButton).whenPressed(new InstantCommand(m_drivetrain::resetEncoders));
     // A_Button
     new Button(m_controller::getAButton).whenPressed(new DriveDistance(-0.5, Units.inchesToMeters(10), m_drivetrain));
     // Y_Button

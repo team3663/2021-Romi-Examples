@@ -20,8 +20,8 @@ public class DriveDistance extends CommandBase {
    * @param inches The number of inches the robot will drive
    * @param drive The drivetrain subsystem on which this command will run
    */
-  public DriveDistance(double speed, double inches, Drivetrain drive) {
-    m_distance = inches;
+  public DriveDistance(double speed, double meters, Drivetrain drive) {
+    m_distance = meters;
     m_speed = speed;
     m_drive = drive;
     addRequirements(drive);
@@ -30,6 +30,7 @@ public class DriveDistance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("DriveDistance.java started.");
     m_drive.arcadeDrive(0, 0);
     m_drive.resetEncoders();
   }
@@ -44,6 +45,7 @@ public class DriveDistance extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_drive.arcadeDrive(0, 0);
+    System.out.println("DriveDistance.java ended.");
   }
 
   // Returns true when the command should end.

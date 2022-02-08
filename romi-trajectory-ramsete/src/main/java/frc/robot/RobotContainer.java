@@ -18,6 +18,8 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.AutonomousDistance;
 import frc.robot.commands.AutonomousTime;
+import frc.robot.commands.DriveDistance;
+import frc.robot.commands.TurnDegrees;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.OnBoardIO;
 import frc.robot.subsystems.OnBoardIO.ChannelMode;
@@ -27,6 +29,7 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -49,6 +52,7 @@ public class RobotContainer {
 
   // Create SmartDashboard chooser for autonomous routines
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+
 
   // NOTE: The I/O pin functionality of the 5 exposed I/O pins depends on the hardware "overlay"
   // that is specified when launching the wpilib-ws server on the Romi raspberry pi.
@@ -141,6 +145,18 @@ public class RobotContainer {
     // is scheduled over it.
     m_drivetrain.setDefaultCommand(getArcadeDriveCommand());
 
+    // Example of using XboxController buttons
+    // 
+    // A_Button
+    new Button(m_controller::getAButton).whenPressed(new DriveDistance(-0.5, Units.inchesToMeters(10), m_drivetrain));
+    // Y_Button
+    new Button(m_controller::getYButton).whenPressed(new DriveDistance(0.5, Units.inchesToMeters(10), m_drivetrain));
+    // X_Button
+    new Button(m_controller::getXButton).whenPressed(new TurnDegrees(-0.5, Units.degreesToRadians(90), m_drivetrain));
+    // B_Button
+    new Button(m_controller::getBButton).whenPressed(new TurnDegrees(0.5, Units.degreesToRadians(90), m_drivetrain));
+
+
     // Example of how to use the onboard IO
     Button onboardButtonA = new Button(m_onboardIO::getButtonAPressed);
     onboardButtonA
@@ -148,7 +164,7 @@ public class RobotContainer {
         .whenInactive(new PrintCommand("Button A Released"));
 
     // Setup SmartDashboard options
-    m_chooser.setDefaultOption("Ramsete Trajectory", generateRamseteCommand());
+    m_chooser.setDefaultOption("Ramsete Trajectory " + System.currentTimeMillis(), generateRamseteCommand());
     m_chooser.addOption("Auto Routine Distance", new AutonomousDistance(m_drivetrain));
     m_chooser.addOption("Auto Routine Time", new AutonomousTime(m_drivetrain));
 

@@ -13,12 +13,13 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.sensors.RomiGyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
   private static final double kCountsPerRevolution = 1440.0;
-  private static final double kWheelDiameterMeter = 0.07;
+  private static final double kWheelDiameterMeter = Units.inchesToMeters(2.75);
 
   // The Romi has the left and right motors set to
   // PWM channels 0 and 1 respectively
@@ -159,7 +160,7 @@ public class Drivetrain extends SubsystemBase {
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
-    
+
     // Also update the Field2D object (so that we can visualize this in sim)
     m_field2d.setRobotPose(getPose());
   }
